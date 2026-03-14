@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ayo Olopon</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Yoruba Strategy Game</p>
+        <h1>Ayo Olopon</h1>
+        <p class="subtitle">
+          A tactile, fast-paced sowing game from southwest Nigeria. Play locally
+          with two players and keep your captures sharp.
+        </p>
+      </header>
+
+      <section class="game">
+        <div class="status" id="status">
+          <div class="status__turn">
+            <span class="label">Turn</span>
+            <span class="value" id="turnLabel">Player 1</span>
+          </div>
+          <div class="status__score">
+            <div class="score">
+              <span class="label">Player 2 Captures</span>
+              <span class="value" id="scoreP2">0</span>
+            </div>
+            <div class="score">
+              <span class="label">Player 1 Captures</span>
+              <span class="value" id="scoreP1">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="board" aria-label="Ayo Olopon board">
+          <div class="row row--top" id="rowTop"></div>
+          <div class="divider" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="row row--bottom" id="rowBottom"></div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="resetBtn">New Game</button>
+          <button class="btn btn--ghost" id="hintBtn">Show Rules</button>
+        </div>
+      </section>
+
+      <section class="rules" id="rules">
+        <div class="rules__panel">
+          <h2>How to play (local two-player)</h2>
+          <ul>
+            <li>Each player owns the six pits on their side.</li>
+            <li>On your turn, pick a pit on your side and sow seeds counterclockwise.</li>
+            <li>If your last seed lands in an opponent pit making exactly 4, capture those 4.</li>
+            <li>Continue capturing backward on the opponent side while pits are exactly 4.</li>
+            <li>The game ends when one side is empty; remaining seeds are collected.</li>
+          </ul>
+          <p class="note">
+            This is a simplified ruleset with chain captures and no starvation rule.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Crafted for local play. Tap a pit to sow.
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
