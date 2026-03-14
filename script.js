@@ -6,6 +6,7 @@ const state = {
   current: 0,
   score: [0, 0],
   gameOver: false,
+  mode: "local",
 };
 
 const rowTop = document.getElementById("rowTop");
@@ -16,6 +17,8 @@ const scoreP2 = document.getElementById("scoreP2");
 const resetBtn = document.getElementById("resetBtn");
 const hintBtn = document.getElementById("hintBtn");
 const rulesPanel = document.getElementById("rules");
+const modeBtn = document.getElementById("modeBtn");
+const modeLabel = document.getElementById("modeLabel");
 
 function init() {
   state.pits = Array(12).fill(4);
@@ -23,6 +26,7 @@ function init() {
   state.score = [0, 0];
   state.gameOver = false;
   render();
+  maybeAIMove();
 }
 
 function ownerOf(pit) {
@@ -98,6 +102,59 @@ function makeMove(pit) {
   render();
 }
 
+function scoreMove(pit) {
+  const temp = state.pits.slice();
+  let seeds = temp[pit];
+  temp[pit] = 0;
+  let cursor = pit;
+
+  while (seeds > 0) {
+    cursor = nextPit(cursor);
+    temp[cursor] += 1;
+    seeds -= 1;
+  }
+
+  let gain = 0;
+  let captureCursor = cursor;
+  while (ownerOf(captureCursor) !== state.current && temp[captureCursor] === 4) {
+    gain += 4;
+    temp[captureCursor] = 0;
+    captureCursor = prevPit(captureCursor);
+  }
+
+  return { gain, seeds: state.pits[pit] };
+}
+
+function pickAiMove() {
+  const pits = pitsForPlayer(1).filter((pit) => state.pits[pit] > 0);
+  if (pits.length === 0) return null;
+
+  let bestPit = pits[0];
+  let bestScore = -Infinity;
+
+  pits.forEach((pit) => {
+    const evaluation = scoreMove(pit);
+    const value = evaluation.gain * 10 + evaluation.seeds;
+    if (value > bestScore) {
+      bestScore = value;
+      bestPit = pit;
+    }
+  });
+
+  return bestPit;
+}
+
+function maybeAIMove() {
+  if (state.mode !== "ai") return;
+  if (state.gameOver) return;
+  if (state.current !== 1) return;
+
+  const choice = pickAiMove();
+  if (choice === null) return;
+
+  window.setTimeout(() => makeMove(choice), 450);
+}
+
 function renderPit(pit) {
   const container = document.createElement("button");
   container.type = "button";
@@ -139,11 +196,16 @@ function render() {
   turnLabel.textContent = state.gameOver
     ? "Game Over"
     : state.current === 0
-    ? "Player 1"
+    ? state.mode === "ai"
+      ? "Player 1 (You)"
+      : "Player 1"
+    : state.mode === "ai"
+    ? "Player 2 (AI)"
     : "Player 2";
 
   scoreP1.textContent = state.score[0];
   scoreP2.textContent = state.score[1];
+  modeLabel.textContent = state.mode === "ai" ? "Solo vs AI" : "Local Two-Player";
 }
 
 resetBtn.addEventListener("click", init);
@@ -151,6 +213,12 @@ resetBtn.addEventListener("click", init);
 hintBtn.addEventListener("click", () => {
   rulesPanel.classList.toggle("open");
   hintBtn.textContent = rulesPanel.classList.contains("open") ? "Hide Rules" : "Show Rules";
+});
+
+modeBtn.addEventListener("click", () => {
+  state.mode = state.mode === "ai" ? "local" : "ai";
+  modeBtn.textContent = state.mode === "ai" ? "Switch to Local" : "Play vs AI";
+  init();
 });
 
 init();

@@ -91,7 +91,8 @@ h1 {
   z-index: 1;
 }
 
-.status__turn {
+.status__turn,
+.status__mode {
   background: var(--bone);
   padding: 12px 18px;
   border-radius: 16px;

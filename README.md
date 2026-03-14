@@ -5,7 +5,7 @@ A simple, local two-player implementation of Ayo Olopon (Yoruba strategy game) b
 ## Features
 - 12-pit board with counterclockwise sowing
 - Chain captures when the last seed makes exactly 4 on the opponent side
-- Local two-player play
+- Local two-player play or solo vs AI
 - Score tracking, reset, and rules panel
 
 ## Rules Implemented (Simplified)
@@ -19,6 +19,9 @@ Note: This build does not enforce starvation/feeding rules.
 
 ## Run
 Open `index.html` in any modern browser.
+
+## Solo vs AI
+Use the "Play vs AI" button to switch into solo mode. You play as Player 1 (bottom row).
 
 ## Project Structure
 - `index.html` - UI layout
